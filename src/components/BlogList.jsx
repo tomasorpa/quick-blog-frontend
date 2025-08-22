@@ -8,9 +8,9 @@ export const BlogList = ({ category }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
     return (
-      <div>
+      <div className="px-6">
             
-    <div className="flex justify-center gap-2 sm:gap-8 my-10 relative">
+    <div className="flex justify-center gap-2 flex-wrap sm:gap-8 my-10 relative">
       {category.map((item, idx) => (
           <button
           key={item}
@@ -32,15 +32,15 @@ export const BlogList = ({ category }) => {
       ))}
       </div>
 
-      <div className="flex flex-wrap">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
         {blog_data
           .filter(
             (item) =>
               category[selectedIndex] === "All" ||
               item.category === category[selectedIndex]
           )
-          .map((item, idx) => (
-            <BlogCard data={item} />
+          .map((item) => (
+            <BlogCard key={item._id} data={item} />
           ))}
       </div>
     </div>

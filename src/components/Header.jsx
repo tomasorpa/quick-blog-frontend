@@ -19,16 +19,16 @@ export const Header = () => {
           Story Start Right Here.
         </p>
 
-        <form className="flex justify-between max-w-lg max-sm:scale-75 mx-auto border border-gray-300 bg-white rounded overflow-hidden">
+        <form className="flex justify-between max-sm:scale-75 sm:w-full mx-auto border border-gray-300 bg-white rounded overflow-hidden">
           <input
             type="text"
             placeholder="Search For Blogs"
             required
-            className="w-full pl-4 "
+            className="w-full pl-4 text-sm sm:text-md "
           />
           <button
             type="submit"
-            className="bg-primary text-white px-8 py-2 m-1.5 rounded hover:scale-105 transition-all cursor-pointer"
+            className="bg-primary text-white text-sm sm:text-md sm:px-8 px-4 py-2 m-1.5 rounded hover:scale-105 transition-all cursor-pointer"
           >
             Search
           </button>
