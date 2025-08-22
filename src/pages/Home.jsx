@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogList, Header, Navbar, Newsletter } from "../components";
+import { BlogList, Footer, Header, Navbar, Newsletter } from "../components";
 import { blogCategories } from "../assets/assets";
 
 export const Home = () => {
@@ -8,7 +8,8 @@ export const Home = () => {
       <Navbar />
       <Header />
       <BlogList category={blogCategories} />
-      <Newsletter/>
+      <Newsletter />
+      <Footer/>
     </main>
   );
 };

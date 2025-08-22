@@ -28,7 +28,7 @@ export const Header = () => {
           />
           <button
             type="submit"
-            className="bg-primary text-white text-sm sm:text-md sm:px-8 px-4 py-2 m-1.5 rounded hover:scale-105 transition-all cursor-pointer"
+            className="bg-primary hover:bg-primary/80 text-white text-sm sm:text-md sm:px-8 px-4 py-2 m-1.5 rounded hover:scale-105 transition-all cursor-pointer"
           >
             Search
           </button>

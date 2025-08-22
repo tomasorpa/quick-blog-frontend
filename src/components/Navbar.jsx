@@ -14,7 +14,7 @@ export const Navbar = () => {
         onClick={() => navigate("/")}
       />
       <button
-        className="py-2 px-6 text-white bg-primary flex gap-2 justify-center items-center rounded-full text-sm cursor-pointer"
+        className="py-2 px-6 text-white bg-primary hover:bg-primary/80 flex gap-2 justify-center items-center rounded-full text-sm cursor-pointer"
         onClick={() => navigate("/admin")}
       >
         Login
