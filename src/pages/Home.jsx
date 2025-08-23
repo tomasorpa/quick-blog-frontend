@@ -4,8 +4,8 @@ import { blogCategories } from "../assets/assets";
 
 export const Home = () => {
   return (
-    <main vdd>
-      <Navbar />
+    <main >
+      <Navbar btnText={"login"} />
       <Header />
       <BlogList category={blogCategories} />
       <Newsletter />

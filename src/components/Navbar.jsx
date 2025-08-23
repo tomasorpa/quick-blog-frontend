@@ -2,7 +2,7 @@ import React from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 
-export const Navbar = () => {
+export const Navbar = ({btnText }) => {
   const navigate=useNavigate();
 
   return (
@@ -17,7 +17,7 @@ export const Navbar = () => {
         className="py-2 px-6 text-white bg-primary hover:bg-primary/80 flex gap-2 justify-center items-center rounded-full text-sm cursor-pointer"
         onClick={() => navigate("/admin")}
       >
-        Login
+        {btnText}
         <img src={assets.arrow} alt="arrow" className="w-3" />
       </button>
     </div>

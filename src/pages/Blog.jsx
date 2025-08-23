@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { assets, blog_data, comments_data } from "../assets/assets";
-import { Footer, Navbar } from "../components";
+import { Footer, Loader, Navbar } from "../components";
 import moment from "moment";
 import { div } from "motion/react-client";
 
@@ -37,7 +37,7 @@ export const Blog = () => {
         src={assets.gradientBackground}
         alt=""
       />
-      <Navbar />
+      <Navbar btnText={"logout"}/>
       <div className="text-center mt-20 text-gray-600 px-2">
         <p className="text-primary py-4 font-medium">
           Published on {moment(data.createdAt).format("MMMM Do YYYY")}{" "}
@@ -45,7 +45,11 @@ export const Blog = () => {
         <h1 className="text-2xl sm:text-4xl font-semibold max-w-2xl mx-auto text-gray-800">
           {data.title}
         </h1>
-        <h2 className="my-5 max-w-lg truncate mx-auto">{data.subTitle}</h2>
+        <h2
+          className="my-5 truncate max-w-lg mx-auto"
+          dangerouslySetInnerHTML={{ __html: data.subTitle }}
+        >
+        </h2>
         <p className="border-primary/40 border text-sm sm:text-2xl inline-block px-2 py-1 text-primary rounded-full bg-primary/7 ">
           Tomas Ortega
         </p>
@@ -127,6 +131,6 @@ export const Blog = () => {
       <Footer />
     </main>
   ) : (
-    <main>loading...</main>
+    <Loader />
   );
 };
