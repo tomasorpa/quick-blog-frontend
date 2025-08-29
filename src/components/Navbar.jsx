@@ -1,10 +1,10 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/useAppContext";
 
-export const Navbar = ({btnText }) => {
-  const navigate=useNavigate();
-
+export const Navbar = ({ btnText ,onClick}) => {
+  const { navigate, token } = useAppContext();
   return (
     <div className="flex justify-between items-center py-5 mx-8 sm:mx-20 xl:mx-32">
       <img
@@ -15,7 +15,7 @@ export const Navbar = ({btnText }) => {
       />
       <button
         className="py-2 px-6 text-white bg-primary hover:bg-primary/80 flex gap-2 justify-center items-center rounded-full text-sm cursor-pointer"
-        onClick={() => navigate("/admin")}
+        onClick={onClick}
       >
         {btnText}
         <img src={assets.arrow} alt="arrow" className="w-3" />

@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { assets, blogCategories } from "../assets/assets";
 import Quill from "quill";
-import { option } from "motion/react-client";
+import { parse } from "marked";
+
+import { useAppContext } from "../context/useAppContext";
+import toast from "react-hot-toast";
 export const AddBlog = () => {
   const [image, setImage] = useState(false);
   const [subtitle, setSubtitle] = useState("");
@@ -11,9 +14,68 @@ export const AddBlog = () => {
   const editorRef = useRef(null);
   const quillRef = useRef(null);
 
-  const generateContent = async () => {};
-  const onSubmitHandler = (e) => {
+  const [isAdding, setIsAdding] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { axios } = useAppContext();
+
+  const generateContent = async () => {
+    if (!title) return toast.error("Please enter a title");
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post("api/blog/generate", { prompt: title });
+      if (data.success) {
+        quillRef.current.root.innerHTML = parse(data.content);
+        setIsLoading(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      setIsAdding(true);
+
+      const blog = {
+        title,
+        subtitle,
+        description: quillRef.current.root.innerHTML,
+        category,
+        isPublished,
+      };
+      console.warn(blog);
+      const formData = new FormData();
+      formData.append("blog", JSON.stringify(blog));
+      formData.append("image", image);
+
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const { data } = await axios.post("/api/blog/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.warn(data);
+      if (data.success) {
+        toast.success(data.message);
+        setImage(false);
+        setSubtitle("");
+        setTitle("");
+        quillRef.current.root.innerHTML = "";
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsAdding(false);
+    }
   };
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
@@ -23,9 +85,9 @@ export const AddBlog = () => {
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="flex-1 h-[140vh] bg-blue-50/50 text-gray-600 "
+      className="flex justify-center text-sm items-start sm:items-center bg-blue-50/50 text-gray-600 "
     >
-      <div className="bg-white w-9/12 max-w-3xl p-4 md:p-10 sm:m-10 shadow rounded">
+      <div className="bg-white w-11/12 p-4 md:p-10 m-4 sm:m-10 shadow rounded">
         <p>Upload Thumbnail</p>
         <label htmlFor="image">
           <img
@@ -46,7 +108,7 @@ export const AddBlog = () => {
           type="text"
           placeholder="Type here"
           required
-          className="w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded"
+          className="w-full mt-2 p-2 border border-gray-300 outline-none rounded"
           onChange={(e) => setTitle(e.target.value)}
           value={title}
         />
@@ -55,25 +117,30 @@ export const AddBlog = () => {
           type="text"
           placeholder="Type here"
           required
-          className="w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded"
+          className="w-full mt-2 p-2 border border-gray-300 outline-none rounded"
           onChange={(e) => setSubtitle(e.target.value)}
           value={subtitle}
         />
         <p className="mt-4">Blog Description</p>
-        <div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative">
+        <div className=" sm:pb-10 pt-2 min-h-60 relative">
           <div ref={editorRef}> </div>
 
           <button
             type="button"
+            disabled={isLoading}
             onClick={generateContent}
-            className="absolute bottom-0 right-2 ml-2 text-xs 
+            className="absolute mt-4  right-0 ml-2 text-xs 
              text-white px-4 py-1.5 rounded-full 
              bg-gradient-to-r from-primary  to-purple-700 hover:animate-pulse 
              hover:opacity-90 shadow-md transition-all duration-300"
           >
-            Generate with AI
+            {isLoading ? (
+              <div className="w-8 h-8 rounded-full border-2 border-t-primary animate-spin"></div>
+            ) : (
+              "Generate with AI"
+            )}
           </button>
-          <p className="mt-4">Blog Description</p>
+          <p className="mt-12">Blog Description</p>
           <select
             className="mt-2 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded"
             onChange={(e) => setCategory(e.target.value)}
@@ -98,9 +165,10 @@ export const AddBlog = () => {
 
           <button
             type="submit"
-            className="mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm"
+            disabled={isAdding}
+            className=" w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm"
           >
-            Add Blog
+            {isAdding ? "Adding..." : "Add Blog"}
           </button>
         </div>
       </div>

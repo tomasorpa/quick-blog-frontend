@@ -8,10 +8,12 @@ export const BlogCard = ({ data }) => {
       const navigate = useNavigate();
   return (
     <div
-      className="w-full rounded-lg overflow-hidden shadow hover:shadow-primary/25 hover:scale-101 duration-300 cursor-pointer"
+      className="w-full rounded-lg overflow-hidden shadow hover:shadow-primary/25 
+      
+      hover:scale-101 duration-300 cursor-pointer"
       onClick={() => navigate(`blog/${_id}`)}
     >
-      <img src={image} alt="Card Image" className="aspect-video" />
+      <img src={image} alt="Card Image" className="aspect-video object-cover" />
       <span className=" ml-4 mt-4 px-3 py-1 inline-block bg-primary/20 rounded-full text-primary text-[10px] sm:text-xs">
         {category}
       </span>

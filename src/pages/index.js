@@ -4,5 +4,4 @@ export * from "./Blog";
 export * from "./Comments";
 export * from "./Dashboard";
 export * from "./Home";
-export * from "./Layout";
 export * from "./ListBlog";

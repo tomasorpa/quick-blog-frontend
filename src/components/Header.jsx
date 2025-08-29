@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useRef } from "react";
 import { assets } from "../assets/assets";
+import { useAppContext } from "../context/useAppContext";
 
 export const Header = () => {
+  const { setInput, input } = useAppContext();
+  const inputRef = useRef();
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    setInput(inputRef.current.value);
+  };
+
+  const onClear = () => {
+    setInput("")
+    inputRef.current.value=""
+}
+
   return (
     <section className="mx-8 sm:mx-16 xl:mx-24 relative">
       <div className="text-center mt-20 mb-8">
@@ -19,12 +33,16 @@ export const Header = () => {
           Story Start Right Here.
         </p>
 
-        <form className="flex justify-between max-sm:scale-75 sm:w-full mx-auto border border-gray-300 bg-white rounded overflow-hidden">
+        <form
+          onSubmit={onSubmitHandler}
+          className="flex justify-between max-sm:scale-75 sm:w-full mx-auto border border-gray-300 bg-white rounded overflow-hidden"
+        >
           <input
+            ref={inputRef}
             type="text"
             placeholder="Search For Blogs"
             required
-            className="w-full pl-4 text-sm sm:text-md "
+            className="w-full pl-4 outline-none text-sm sm:text-md "
           />
           <button
             type="submit"
@@ -33,6 +51,14 @@ export const Header = () => {
             Search
           </button>
         </form>
+      </div>
+
+      <div className="text-center">
+        {input && (
+          <button className="border font-light text-xs py-1 px-3 rounded-sm shadow-custom-sm cursor-pointer" onClick={onClear}>
+            Clear Search
+          </button>
+        )}
       </div>
       <img
         src={assets.gradientBackground}
